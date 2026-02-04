@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
-import CertificateSBT from "../contracts/CertificateSBT.json";
-import DeployedAddresses from "../contracts/deployed_addresses.json";
+import CertificateSBT from "../src/contracts/CertificateSBT.json";
+import DeployedAddresses from "../src/contracts/deployed_addresses.json";
 
 // Lấy địa chỉ contract từ file đã copy
 // Lưu ý: Key trong file json của bạn là "CertificateSBTModule#CertificateSBT"
