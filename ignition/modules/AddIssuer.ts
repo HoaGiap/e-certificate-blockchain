@@ -1,8 +1,8 @@
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
-const AddIssuerModule = buildModule("AddIssuerModule", (m) => {
+const AddIssuerModule = buildModule("AddIssuerModule_v3", (m) => {
   // 1. Kết nối với contract đã deploy
-  const CONTRACT_ADDRESS = "0xc4c92321fE3Fd6231b1995E62c482A613F2ae5CE";
+  const CONTRACT_ADDRESS = "0xc17FA456C6f011E3b708a7807A839A0c72Fd0eEc";
   const certificateSBT = m.contractAt("CertificateSBT", CONTRACT_ADDRESS);
 
   // 2. Thông tin Issuer mới

@@ -1,4 +1,7 @@
 {
   "CertificateSBTModule#CertificateSBT": "0xc4c92321fE3Fd6231b1995E62c482A613F2ae5CE",
-  "AddIssuerModule#CertificateSBT": "0xc4c92321fE3Fd6231b1995E62c482A613F2ae5CE"
+  "AddIssuerModule#CertificateSBT": "0xc4c92321fE3Fd6231b1995E62c482A613F2ae5CE",
+  "CertificateSBTModule#CertificateSBT_v2": "0xA9282257d4d3cC9f5BA2b184c5C391931a3F5Cdf",
+  "AddIssuerModule_v2#CertificateSBT": "0xA9282257d4d3cC9f5BA2b184c5C391931a3F5Cdf",
+  "CertificateSBTModule#CertificateSBT_v3": "0xc17FA456C6f011E3b708a7807A839A0c72Fd0eEc"
 }

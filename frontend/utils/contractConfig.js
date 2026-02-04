@@ -5,7 +5,7 @@ import DeployedAddresses from "../src/contracts/deployed_addresses.json";
 // Lấy địa chỉ contract từ file đã copy
 // Lưu ý: Key trong file json của bạn là "CertificateSBTModule#CertificateSBT"
 const CONTRACT_ADDRESS =
-  DeployedAddresses["CertificateSBTModule#CertificateSBT"];
+  DeployedAddresses["CertificateSBTModule#CertificateSBT_v3"];
 
 export const getContract = async (signer) => {
   return new ethers.Contract(CONTRACT_ADDRESS, CertificateSBT.abi, signer);
