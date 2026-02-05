@@ -82,7 +82,9 @@ export default function Home() {
               issueDate: new Date(
                 Number(cert.issueDate) * 1000,
               ).toLocaleDateString(),
-              schoolName: schoolName,
+              schoolName:
+                schoolName ||
+                `Issuer (${cert.issuer.slice(0, 6)}...${cert.issuer.slice(-4)})`,
               fileHash: cert.fileHash,
               isValid: cert.isValid,
               dateOfBirth: cert.dateOfBirth,
@@ -336,7 +338,7 @@ export default function Home() {
                     </p>
                     <p>
                       <span className="font-semibold">Cấp bởi:</span>{" "}
-                      {cert.issuerName}
+                      {cert.schoolName}
                     </p>
                     <p>
                       <span className="font-semibold">Ngày cấp:</span>{" "}

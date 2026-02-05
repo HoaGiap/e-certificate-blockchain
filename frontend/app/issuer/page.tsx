@@ -43,7 +43,13 @@ export default function IssuerPage() {
     const list = [];
     for (const id of ids) {
       const c = await contract.certificates(id);
-      list.push({ ...c, id: id.toString() });
+      // Explicitly map struct fields to object to avoid "undefined" or Spread issues
+      list.push({
+        id: id.toString(),
+        studentName: c.studentName, // c[0]
+        degreeName: c.degreeName, // c[1]
+        isValid: c.isValid, // c[5]
+      });
     }
     setCerts(list);
   };
