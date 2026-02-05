@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
+import { ArrowLeft, User } from "lucide-react";
 import { getContract, connectWallet } from "../../utils/contractConfig";
 
 const ADMIN_ROLE = ethers.ZeroHash;
@@ -85,69 +86,90 @@ export default function AdminPage() {
 
   if (!account)
     return (
-      <div className="p-10 text-center">
-        <button
-          onClick={checkLogin}
-          className="bg-blue-600 text-white px-4 py-2 rounded"
-        >
-          Kết nối Ví Admin
-        </button>
+      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-gray-50 flex items-center justify-center p-4">
+        <div className="bg-white p-8 rounded shadow-2xl text-center border-t-4 border-blue-600">
+          <h2 className="text-2xl font-bold text-blue-900 mb-4">
+            Quản Trị Hệ Thống
+          </h2>
+          <p className="text-gray-600 mb-6">
+            Vui lòng kết nối ví Admin để tiếp tục
+          </p>
+          <button
+            onClick={checkLogin}
+            className="bg-blue-600 text-white px-8 py-3 rounded font-bold hover:bg-blue-700 transition transform hover:scale-105"
+          >
+            🔗 Kết nối Ví Admin
+          </button>
+        </div>
       </div>
     );
 
   if (!isAdmin)
     return (
-      <div className="p-10 text-center text-red-600">Truy cập bị từ chối.</div>
+      <div className="min-h-screen bg-gradient-to-b from-red-50 to-gray-50 flex items-center justify-center p-4">
+        <div className="bg-white p-8 rounded shadow-2xl text-center border-t-4 border-red-600">
+          <h2 className="text-2xl font-bold text-red-900 mb-2">
+            Truy cập Bị Từ Chối
+          </h2>
+          <p className="text-gray-600">Bạn không có quyền Admin.</p>
+        </div>
+      </div>
     );
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <main className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">
-            Quản trị Hệ thống (Admin)
+        {/* Header with Back Button */}
+        <div className="flex justify-between items-center mb-8 bg-white p-4 rounded shadow">
+          <h1 className="text-3xl font-bold text-[#2C3E50] flex items-center gap-2">
+            <User className="w-8 h-8" />
+            Quản Trị Hệ Thống
           </h1>
-          <a href="/" className="text-blue-500">
-            ← Trang chủ
+          <a
+            href="/"
+            className="flex items-center gap-2 px-4 py-2 bg-[#3498DB] text-white rounded font-semibold hover:bg-[#2980B9] transition"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Quay về
           </a>
         </div>
 
         {/* Add Issuer Form */}
-        <div className="bg-white p-6 rounded-lg shadow mb-8">
-          <h2 className="text-lg font-bold mb-4">
-            Thêm Trường/Đơn vị cấp bằng
+        <div className="bg-white p-6 rounded shadow mb-6">
+          <h2 className="text-lg font-bold text-gray-800 mb-4">
+            Thêm Trường/Đơn Vị
           </h2>
-          <div className="flex gap-4">
+          <div className="flex gap-3">
             <input
-              className="border p-2 rounded flex-1"
+              className="flex-1 border border-gray-300 p-3 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none"
               placeholder="Địa chỉ ví (0x...)"
               value={form.address}
               onChange={(e) => setForm({ ...form, address: e.target.value })}
             />
             <input
-              className="border p-2 rounded flex-1"
-              placeholder="Tên trường (VD: ĐH BK Hà Nội)"
+              className="flex-1 border border-gray-300 p-3 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              placeholder="Tên trường"
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
             />
             <button
               onClick={handleAddIssuer}
               disabled={loading}
-              className="bg-green-600 text-white px-6 py-2 rounded font-bold hover:bg-green-700 disabled:opacity-50"
+              className="bg-green-600 text-white px-6 py-3 rounded font-semibold hover:bg-green-700 disabled:opacity-50 transition"
             >
-              {loading ? "Đang xử lý..." : "Thêm"}
+              {loading ? "Đang..." : "Thêm"}
             </button>
           </div>
         </div>
 
         {/* Add Admin Form */}
-        <div className="bg-white p-6 rounded-lg shadow mb-8 border-l-4 border-purple-600">
-          <h2 className="text-lg font-bold mb-4 text-purple-800">
-            Thêm Quản trị viên (Grant Admin Role)
+        <div className="bg-white p-6 rounded-lg shadow mb-6">
+          <h2 className="text-lg font-bold text-gray-800 mb-4">
+            Cấp Quyền Admin
           </h2>
-          <div className="flex gap-4">
+          <div className="flex gap-3">
             <input
-              className="border p-2 rounded flex-1"
+              className="flex-1 border border-gray-300 p-3 rounded focus:ring-2 focus:ring-purple-500 focus:outline-none"
               placeholder="Địa chỉ ví Admin mới (0x...)"
               value={newAdmin}
               onChange={(e) => setNewAdmin(e.target.value)}
@@ -155,42 +177,47 @@ export default function AdminPage() {
             <button
               onClick={handleAddAdmin}
               disabled={loading}
-              className="bg-purple-600 text-white px-6 py-2 rounded font-bold hover:bg-purple-700 disabled:opacity-50"
+              className="bg-purple-600 text-white px-6 py-3 rounded font-semibold hover:bg-purple-700 disabled:opacity-50 transition"
             >
-              {loading ? "Đang xử lý..." : "Cấp quyền Admin"}
+              {loading ? "Đang..." : "Cấp"}
             </button>
           </div>
-          <p className="text-sm text-gray-500 mt-2">
-            * Lưu ý: Admin mới sẽ có toàn quyền quản lý hệ thống tương đương với
-            bạn.
+          <p className="text-xs text-gray-600 mt-2">
+            ⚠️ Admin mới sẽ có toàn quyền quản lý hệ thống
           </p>
         </div>
 
         {/* Issuer List */}
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-lg font-bold mb-4">
-            Danh sách Đơn vị đã cấp quyền
+        <div className="bg-white p-6 rounded shadow border-t-4 border-blue-600">
+          <h2 className="text-lg font-bold text-gray-800 mb-4">
+            Danh Sách Trường/Đơn Vị
           </h2>
-          <table className="w-full text-left">
-            <thead>
-              <tr className="border-b">
-                <th className="p-2">Tên trường</th>
-                <th className="p-2">Địa chỉ ví</th>
-              </tr>
-            </thead>
-            <tbody>
-              {issuers.map((iss, idx) => (
-                <tr key={idx} className="border-b hover:bg-gray-50">
-                  <td className="p-2 font-medium">{iss.name}</td>
-                  <td className="p-2 text-gray-600 font-mono text-sm">
-                    {iss.address}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          {issuers.length === 0 ? (
+            <p className="text-gray-500 text-center py-6">Chưa có trường nào</p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="p-3 text-left">Tên Trường</th>
+                    <th className="p-3 text-left">Địa Chỉ Ví</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {issuers.map((iss, idx) => (
+                    <tr key={idx} className="border-b hover:bg-gray-50">
+                      <td className="p-3 font-medium">{iss.name}</td>
+                      <td className="p-3 font-mono text-xs text-gray-600 break-all">
+                        {iss.address}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
-    </div>
+    </main>
   );
 }

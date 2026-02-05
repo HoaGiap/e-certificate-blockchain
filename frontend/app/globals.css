@@ -28,3 +28,25 @@ body {
 .font-playfair {
   font-family: var(--font-playfair), serif;
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Thêm cấu hình font vào đây */
+@layer base {
+  :root {
+    --font-serif: var(--font-noto-serif);
+    --font-display: var(--font-noto-display);
+  }
+  
+  /* Áp dụng font mặc định cho thẻ body */
+  body {
+    font-family: var(--font-serif), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  }
+}
+
+/* Class tiện ích để dùng font tiêu đề */
+.font-display {
+  font-family: var(--font-display), serif;
+}

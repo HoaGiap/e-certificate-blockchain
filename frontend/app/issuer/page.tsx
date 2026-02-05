@@ -1,6 +1,14 @@
 "use client";
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
+import {
+  Building2,
+  FileText,
+  Plus,
+  Trash2,
+  ArrowLeft,
+  BarChart3,
+} from "lucide-react";
 import { getContract, connectWallet } from "../../utils/contractConfig";
 
 export default function IssuerPage() {
@@ -160,29 +168,34 @@ export default function IssuerPage() {
     );
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8 font-sans">
+    <main className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-6xl mx-auto">
-        <header className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-bold text-blue-900">
-            Kênh Nhà Trường (Issuer)
+        <header className="flex justify-between items-center mb-8 bg-white p-4 rounded shadow">
+          <h1 className="text-3xl font-bold text-[#2C3E50] flex items-center gap-2">
+            <Building2 className="w-8 h-8" />
+            Kênh Nhà Trường
           </h1>
-          <a href="/" className="text-blue-500">
-            ← Trang chủ
+          <a
+            href="/"
+            className="flex items-center gap-2 px-4 py-2 bg-[#3498DB] text-white rounded font-semibold hover:bg-[#2980B9] transition"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Quay về
           </a>
         </header>
 
         {/* Tabs */}
-        <div className="flex gap-4 mb-6 border-b">
+        <div className="flex gap-2 mb-6 border-b flex-wrap">
           {["dashboard", "single", "batch", "revoke"].map((tab) => (
             <button
               key={tab}
-              className={`px-4 py-2 font-medium ${activeTab === tab ? "border-b-2 border-blue-600 text-blue-600" : "text-gray-500"}`}
+              className={`px-4 py-2 font-semibold transition ${activeTab === tab ? "border-b-2 border-blue-600 text-blue-600" : "text-gray-500 hover:text-gray-700"}`}
               onClick={() => setActiveTab(tab)}
             >
-              {tab === "dashboard" && "Danh sách đã cấp"}
-              {tab === "single" && "Cấp bằng Lẻ"}
-              {tab === "batch" && "Cấp bằng Lô (CSV)"}
-              {tab === "revoke" && "Thu hồi"}
+              {tab === "dashboard" && "📋 Danh sách"}
+              {tab === "single" && "🎓 Cấp Lẻ"}
+              {tab === "batch" && "📊 Cấp Lô"}
+              {tab === "revoke" && "🗑 Thu hồi"}
             </button>
           ))}
         </div>
@@ -190,110 +203,145 @@ export default function IssuerPage() {
         {/* Content */}
         <div className="bg-white p-6 rounded shadow">
           {activeTab === "dashboard" && (
-            <table className="w-full text-left">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="p-2">ID</th>
-                  <th className="p-2">Sinh viên</th>
-                  <th className="p-2">Bằng cấp</th>
-                  <th className="p-2">Trạng thái</th>
-                </tr>
-              </thead>
-              <tbody>
-                {certs.map((c) => (
-                  <tr key={c.id} className="border-b">
-                    <td className="p-2">#{c.id}</td>
-                    <td className="p-2">{c.studentName}</td>
-                    <td className="p-2">{c.degreeName}</td>
-                    <td className="p-2">
-                      {c.isValid ? (
-                        <span className="text-green-600">Hiệu lực</span>
-                      ) : (
-                        <span className="text-red-600">Đã hủy</span>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div>
+              <h3 className="text-xl font-bold mb-4 text-blue-900">
+                Danh sách Văn bằng Đã Cấp
+              </h3>
+              {certs.length === 0 ? (
+                <p className="text-gray-500 italic text-center py-8">
+                  Không có văn bằng nào.👋
+                </p>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="bg-blue-100 border-b-2 border-blue-600">
+                        <th className="p-4 font-bold text-blue-900">#ID</th>
+                        <th className="p-4 font-bold text-blue-900">
+                          Sinh viên
+                        </th>
+                        <th className="p-4 font-bold text-blue-900">
+                          Bằng cấp
+                        </th>
+                        <th className="p-4 font-bold text-blue-900">
+                          Trạng thái
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {certs.map((c) => (
+                        <tr
+                          key={c.id}
+                          className="border-b hover:bg-blue-50 transition"
+                        >
+                          <td className="p-4 font-bold text-blue-600">
+                            #{c.id}
+                          </td>
+                          <td className="p-4 font-medium">{c.studentName}</td>
+                          <td className="p-4">{c.degreeName}</td>
+                          <td className="p-4">
+                            {c.isValid ? (
+                              <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold text-sm">
+                                ✓ Hiệu lực
+                              </span>
+                            ) : (
+                              <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full font-bold text-sm">
+                                ✗ Đã hủy
+                              </span>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
           )}
 
           {activeTab === "single" && (
-            <div className="grid grid-cols-2 gap-4">
-              <input
-                className="border p-2 rounded"
-                placeholder="Ví Sinh viên"
-                value={singleForm.student}
-                onChange={(e) =>
-                  setSingleForm({ ...singleForm, student: e.target.value })
-                }
-              />
-              <input
-                className="border p-2 rounded"
-                placeholder="Tên Sinh viên"
-                value={singleForm.name}
-                onChange={(e) =>
-                  setSingleForm({ ...singleForm, name: e.target.value })
-                }
-              />
-              <input
-                className="border p-2 rounded"
-                placeholder="Tên Văn bằng"
-                value={singleForm.degree}
-                onChange={(e) =>
-                  setSingleForm({ ...singleForm, degree: e.target.value })
-                }
-              />
-              <input
-                className="border p-2 rounded"
-                placeholder="Ngày sinh (DD/MM/YYYY)"
-                value={singleForm.dob}
-                onChange={(e) =>
-                  setSingleForm({ ...singleForm, dob: e.target.value })
-                }
-              />
-              <input
-                className="border p-2 rounded"
-                placeholder="Xếp loại (Giỏi/Khá...)"
-                value={singleForm.class}
-                onChange={(e) =>
-                  setSingleForm({ ...singleForm, class: e.target.value })
-                }
-              />
-              <input
-                className="border p-2 rounded"
-                placeholder="Hình thức ĐT (Chính quy...)"
-                value={singleForm.form}
-                onChange={(e) =>
-                  setSingleForm({ ...singleForm, form: e.target.value })
-                }
-              />
-              <input
-                className="border p-2 rounded"
-                placeholder="Năm TN (2024)"
-                value={singleForm.year}
-                onChange={(e) =>
-                  setSingleForm({ ...singleForm, year: e.target.value })
-                }
-              />
+            <div>
+              <h3 className="text-lg font-bold mb-4 text-gray-800">
+                Cấp Văn Bằng Cá Nhân
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <input
+                  className="border border-gray-300 p-3 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  placeholder="Ví Sinh viên"
+                  value={singleForm.student}
+                  onChange={(e) =>
+                    setSingleForm({ ...singleForm, student: e.target.value })
+                  }
+                />
+                <input
+                  className="border border-gray-300 p-3 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  placeholder="Tên Sinh viên"
+                  value={singleForm.name}
+                  onChange={(e) =>
+                    setSingleForm({ ...singleForm, name: e.target.value })
+                  }
+                />
+                <input
+                  className="border border-gray-300 p-3 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  placeholder="Tên Văn bằng"
+                  value={singleForm.degree}
+                  onChange={(e) =>
+                    setSingleForm({ ...singleForm, degree: e.target.value })
+                  }
+                />
+                <input
+                  className="border border-gray-300 p-3 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  placeholder="Ngày sinh (DD/MM/YYYY)"
+                  value={singleForm.dob}
+                  onChange={(e) =>
+                    setSingleForm({ ...singleForm, dob: e.target.value })
+                  }
+                />
+                <input
+                  className="border border-gray-300 p-3 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  placeholder="Xếp loại"
+                  value={singleForm.class}
+                  onChange={(e) =>
+                    setSingleForm({ ...singleForm, class: e.target.value })
+                  }
+                />
+                <input
+                  className="border border-gray-300 p-3 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  placeholder="Hình thức ĐT"
+                  value={singleForm.form}
+                  onChange={(e) =>
+                    setSingleForm({ ...singleForm, form: e.target.value })
+                  }
+                />
+                <input
+                  className="border border-gray-300 p-3 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  placeholder="Năm TN"
+                  value={singleForm.year}
+                  onChange={(e) =>
+                    setSingleForm({ ...singleForm, year: e.target.value })
+                  }
+                />
+              </div>
               <button
                 onClick={handleSingleMint}
                 disabled={loading}
-                className="col-span-2 bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
+                className="mt-4 w-full bg-green-600 text-white p-3 rounded font-semibold hover:bg-green-700 disabled:opacity-50 transition"
               >
-                {loading ? "Đang xử lý..." : "Cấp bằng"}
+                {loading ? "Đang..." : "Cấp bằng"}
               </button>
             </div>
           )}
 
           {activeTab === "batch" && (
             <div>
-              <p className="mb-2 text-sm text-gray-600">
-                Nhập dữ liệu CSV (Mỗi dòng 1 sinh viên). Định dạng: <br />
-                <code>Address, Name, Degree, DoB, Class, Form, Year</code>
+              <h3 className="text-lg font-bold mb-4 text-gray-800">
+                Cấp Văn Bằng Danh Sách (CSV)
+              </h3>
+              <p className="mb-3 text-sm text-gray-600">
+                Định dạng: Address, Name, Degree, DoB, Class, Form, Year
               </p>
               <textarea
-                className="w-full border p-2 rounded h-40 font-mono"
+                className="w-full border border-gray-300 p-3 rounded font-mono text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none h-32"
                 placeholder="0x123..., NGUYEN VAN A, KY SU CNTT, 01/01/2000, GIOI, CHINH QUY, 2023"
                 value={csvData}
                 onChange={(e) => setCsvData(e.target.value)}
@@ -301,33 +349,37 @@ export default function IssuerPage() {
               <button
                 onClick={handleBatchMint}
                 disabled={loading}
-                className="mt-4 bg-purple-600 text-white px-6 py-2 rounded hover:bg-purple-700"
+                className="mt-4 w-full bg-purple-600 text-white p-3 rounded font-semibold hover:bg-purple-700 disabled:opacity-50 transition"
               >
-                {loading ? "Đang xử lý..." : "Cấp danh sách này"}
+                {loading ? "Đang..." : "Cấp danh sách"}
               </button>
             </div>
           )}
 
           {activeTab === "revoke" && (
             <div>
-              <p className="mb-2">Nhập ID văn bằng cần thu hồi:</p>
-              <input
-                className="border p-2 rounded w-64 mr-4"
-                placeholder="Token ID (VD: 1, 2...)"
-                value={revokeId}
-                onChange={(e) => setRevokeId(e.target.value)}
-              />
-              <button
-                onClick={handleRevoke}
-                disabled={loading}
-                className="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700"
-              >
-                {loading ? "..." : "Xác nhận Thu hồi"}
-              </button>
+              <h3 className="text-lg font-bold mb-4 text-red-700">
+                Thu Hồi Văn Bằng
+              </h3>
+              <div className="flex gap-3">
+                <input
+                  className="flex-1 border border-gray-300 p-3 rounded focus:ring-2 focus:ring-red-500 focus:outline-none font-mono"
+                  placeholder="Token ID"
+                  value={revokeId}
+                  onChange={(e) => setRevokeId(e.target.value)}
+                />
+                <button
+                  onClick={handleRevoke}
+                  disabled={loading}
+                  className="bg-red-600 text-white px-6 py-3 rounded font-semibold hover:bg-red-700 disabled:opacity-50 transition"
+                >
+                  {loading ? "Đang..." : "Thu hồi"}
+                </button>
+              </div>
             </div>
           )}
         </div>
       </div>
-    </div>
+    </main>
   );
 }
